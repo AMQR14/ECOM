@@ -1,8 +1,17 @@
 import { Menu } from 'lucide-react'
 import { useState } from 'react'
-import {Link, useLocation} from 'react-router-dom'
+import {Link, useLocation, useNavigate} from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 export default function AdminLayout({children}){
+    const token = localStorage.getItem('token')
+    const navigate = useNavigate(``)
+    const {logout} = useAuth()
+
+    if(!token){
+        navigate('/home')
+    }
+
     const location = useLocation()
     const [side, setSide] = useState(true)
 
@@ -49,9 +58,7 @@ export default function AdminLayout({children}){
                             <div className="w-full flex items-center justify-center">
                                 <div className="w-full h-0.5 bg-[#5c9bc2]"></div>
                             </div>
-                            <Link to={'/home'}>
-                                <button className="p-1 px-4 rounded-md font-semibold bg-[#d04c4c] hover:bg-[#c24242] transition-all text-white  w-full">Logout</button>
-                            </Link>
+                            <button className="p-1 px-4 rounded-md font-semibold bg-[#d04c4c] hover:bg-[#c24242] transition-all text-white  w-full" onClick={()=> logout()}>Logout</button>
                         </div>
                     </div>
                 </div>
@@ -68,6 +75,9 @@ export default function AdminLayout({children}){
                             </Link>
                             <Link to={'/admin/user'}>
                                 <li className={`${location.pathname == '/admin/user' ? 'border-l-4' : '' } font-semibold hover:bg-[#d0934c] hover:border-l-4 border-white p-3 transition-all`}>User</li>
+                            </Link>
+                            <Link to={'/admin/category'}>
+                                <li className={`${location.pathname == '/admin/category' ? 'border-l-4' : '' } font-semibold hover:bg-[#d0934c] hover:border-l-4 border-white p-3 transition-all`}>Category</li>
                             </Link>
                             <Link to={'/admin/product'}>
                                 <li className={`${location.pathname == '/admin/product' ? 'border-l-4' : '' } font-semibold hover:bg-[#d0934c] hover:border-l-4 border-white p-3 transition-all`}>Product</li>

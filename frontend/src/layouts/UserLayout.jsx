@@ -1,7 +1,16 @@
 import { useState } from "react"
-import {Link, useLocation} from 'react-router-dom'
+import {Link, useLocation, useNavigate} from 'react-router-dom'
+import { useAuth } from "../context/AuthContext"
 
 export default function UserLayout({children}){
+    const token = localStorage.getItem('token')
+    const navigate = useNavigate(``)
+    const {logout} = useAuth()
+
+    if(!token){
+        navigate('/home')
+    }
+
     const location = useLocation()
     const [prof, setProf] = useState(false)
     
@@ -48,9 +57,7 @@ export default function UserLayout({children}){
                             <div className="w-full flex items-center justify-center">
                                 <div className="w-full h-0.5 bg-[#5c9bc2]"></div>
                             </div>
-                            <Link to={'/home'}>
-                                <button className="p-1 px-4 rounded-md font-semibold bg-[#d04c4c] hover:bg-[#c24242] transition-all text-white  w-full">Logout</button>
-                            </Link>
+                            <button className="p-1 px-4 rounded-md font-semibold bg-[#d04c4c] hover:bg-[#c24242] transition-all text-white  w-full" onClick={()=> logout()}>Logout</button>
                         </div>
                     </div>
                 </div>
